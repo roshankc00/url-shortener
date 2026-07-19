@@ -83,4 +83,9 @@ export class UrlController {
     const longUrl = await this.urlService.findOne(code);
     return { url: longUrl, statusCode: HttpStatus.FOUND };
   }
+
+  @Get('debug/pod')
+  getPod() {
+    return { pod: process.env.HOSTNAME };
+  }
 }

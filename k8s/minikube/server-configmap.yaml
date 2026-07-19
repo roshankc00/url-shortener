@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-config
+data:
+  MONGO_URI: mongodb://mongo:27017/url-shortener
+  PORT: '3000'
+  REDIS_HOST: redis
+  REDIS_PORT: '6379'
