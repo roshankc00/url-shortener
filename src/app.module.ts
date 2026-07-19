@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
 import { DatabaseModule } from './common/database/database.module';
+import { HealthModule } from './common/health/health.module';
 import { CustomLoggerModule } from './common/logger/logger.module';
 import { UrlModule } from './url/url.module';
 
@@ -23,6 +24,7 @@ import { UrlModule } from './url/url.module';
     DatabaseModule,
     CustomLoggerModule,
     UrlModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
