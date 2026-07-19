@@ -18,14 +18,15 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
+import { CREATED_URL } from 'src/common/constants';
+
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UrlService } from './url.service';
-import { CREATED_URL } from 'src/common/constants';
 
 @ApiTags('URL Shortener')
 @Controller('url')
 export class UrlController {
-  constructor(private readonly urlService: UrlService) { }
+  constructor(private readonly urlService: UrlService) {}
 
   @Post()
   @ApiOperation({
