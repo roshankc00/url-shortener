@@ -3,8 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 
 import * as Joi from 'joi';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { DatabaseModule } from './common/database/database.module';
 import { CustomLoggerModule } from './common/logger/logger.module';
 import { UrlModule } from './url/url.module';
@@ -26,7 +24,5 @@ import { UrlModule } from './url/url.module';
     CustomLoggerModule,
     UrlModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
