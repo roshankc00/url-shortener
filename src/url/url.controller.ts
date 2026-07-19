@@ -20,11 +20,12 @@ import {
 
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UrlService } from './url.service';
+import { CREATED_URL } from 'src/common/constants';
 
 @ApiTags('URL Shortener')
 @Controller('url')
 export class UrlController {
-  constructor(private readonly urlService: UrlService) {}
+  constructor(private readonly urlService: UrlService) { }
 
   @Post()
   @ApiOperation({
@@ -36,14 +37,7 @@ export class UrlController {
   @ApiCreatedResponse({
     description: 'URL shortened successfully',
     schema: {
-      example: {
-        _id: '507f1f77bcf86cd799439011',
-        code: 'a1b2c3d4',
-        longUrl: 'https://example.com/very/long/path/to/resource',
-        clicks: 0,
-        createdAt: '2026-07-19T10:00:00.000Z',
-        updatedAt: '2026-07-19T10:00:00.000Z',
-      },
+      example: CREATED_URL,
     },
   })
   @ApiBadRequestResponse({
