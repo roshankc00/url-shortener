@@ -37,9 +37,7 @@ export class UrlController {
   @ApiBody({ type: CreateUrlDto })
   @ApiCreatedResponse({
     description: 'URL shortened successfully',
-    schema: {
-      example: CREATED_URL,
-    },
+    schema: { example: CREATED_URL },
   })
   @ApiBadRequestResponse({
     description: 'Invalid URL supplied',
@@ -60,32 +58,59 @@ export class UrlController {
   @ApiOperation({
     summary: 'Redirect to the original URL',
     description:
-      'Looks up the code and redirects (302) to the associated long URL.',
+      'Looks up the code and redirects (302) to the associated long URL. Increments the click counter asynchronously via Redis — the counter is flushed to the database in bulk on a fixed interval, so click counts are eventually consistent, not real-time.',
   })
   @ApiParam({
     name: 'code',
     description: 'Unique short URL code',
     example: 'a1b2c3d4',
   })
-  @ApiOkResponse({ description: 'Redirects to the original URL' })
+  @ApiOkResponse({
+    description: 'Redirect issued (302 Found) to the original long URL',
+  })
   @ApiNotFoundResponse({
-    description: 'Code not found',
+    description: 'No URL exists for the given code',
     schema: {
       example: {
         statusCode: 404,
-        message: 'Document was not found',
+        message: 'No URL found for code: a1b2c3d4',
         error: 'Not Found',
       },
     },
   })
   async redirect(@Param('code') code: string) {
-    console.log(code);
-    const longUrl = await this.urlService.findOne(code);
+    const longUrl = await this.urlService.getUrl(code);
     return { url: longUrl, statusCode: HttpStatus.FOUND };
   }
 
-  @Get('debug/pod')
-  getPod() {
-    return { pod: process.env.HOSTNAME };
+  @Get('get-record/:code')
+  @ApiOperation({
+    summary: 'Get the stored record for a given code',
+    description:
+      'Looks up the code and returns the full stored record. Does not increment the click counter — this is a lookup, not a visit.',
+  })
+  @ApiParam({
+    name: 'code',
+    description: 'Unique short URL code',
+    example: 'a1b2c3d4',
+  })
+  @ApiOkResponse({
+    description: 'Returns the record for the given code',
+    schema: {
+      example: CREATED_URL,
+    },
+  })
+  @ApiNotFoundResponse({
+    description: 'No URL exists for the given code',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'No URL found for code: a1b2c3d4',
+        error: 'Not Found',
+      },
+    },
+  })
+  async getRecord(@Param('code') code: string) {
+    return this.urlService.findOne(code);
   }
 }

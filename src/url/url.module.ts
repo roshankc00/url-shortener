@@ -11,5 +11,6 @@ import { UrlService } from './url.service';
   imports: [DatabaseModule.forFeature([{ name: Url.name, schema: UrlSchema }])],
   controllers: [UrlController],
   providers: [UrlService, UrlRepository],
+  exports: [UrlService],
 })
 export class UrlModule {}
