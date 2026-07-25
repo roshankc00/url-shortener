@@ -9,3 +9,15 @@ services:
     command: redis-server --loglevel warning
     volumes:
       - ./docker-volumes/cache:/data
+
+  zookeeper:
+    container_name: zookeeper_container
+    image: zookeeper:3.9
+    restart: always
+    ports:
+      - '2181:2181'
+    environment:
+      ZOO_4LW_COMMANDS_WHITELIST: srvr,mntr,ruok
+    volumes:
+      - ./docker-volumes/zookeeper/data:/data
+      - ./docker-volumes/zookeeper/datalog:/datalog

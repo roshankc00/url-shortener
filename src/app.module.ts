@@ -19,9 +19,11 @@ import { UrlModule } from './url/url.module';
         MONGO_URI: Joi.string().required(),
         PORT: Joi.number().required(),
         REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.number().required(), // number, not string
+        REDIS_PORT: Joi.number().required(),
         SWAGGER_USERNAME: Joi.string().required(),
         SWAGGER_PASSWORD: Joi.string().required(),
+        ZOOKEEPER_CONNECTION_STRING: Joi.string().required(),
+        ID_BLOCK_SIZE: Joi.number().required(),
       }),
     }),
 

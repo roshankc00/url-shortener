@@ -4,3 +4,4 @@ export const swaggerDetails = {
   version: '1.0',
 };
 export * from './mocs';
+export * from './zookeeper';

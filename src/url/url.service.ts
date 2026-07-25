@@ -1,11 +1,11 @@
-import { randomUUID } from 'crypto';
-
 import { Injectable, Logger } from '@nestjs/common';
 
 import { InjectRedis } from '@songkeys/nestjs-redis';
 import Redis from 'ioredis';
 import { AnyBulkWriteOperation } from 'mongoose';
 
+import { IdGeneratorService } from 'src/common/id-generator';
+import { convertToBase62 } from 'src/common/lib';
 import { CLICK_KEY_PREFIX } from 'src/common/queue';
 
 import { CreateUrlDto } from './dto/create-url.dto';
@@ -19,12 +19,15 @@ export class UrlService {
   constructor(
     private readonly urlRepository: UrlRepository,
     @InjectRedis() private readonly redis: Redis,
+    private readonly idGeneratorService: IdGeneratorService,
   ) {}
 
-  create(createUrlDto: CreateUrlDto) {
+  async create(createUrlDto: CreateUrlDto) {
+    const id = await this.idGeneratorService.nextId();
+    const code = convertToBase62(id);
     return this.urlRepository.create({
       ...createUrlDto,
-      code: randomUUID(),
+      code,
       clicks: 0,
     });
   }
